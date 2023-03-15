@@ -54,7 +54,55 @@ app.delete("/plants/:plantId", (req, res) => {
     } else {
         res.status(404).json({ message: `Error, plant ${idx} doesn't exist`})
     }
-})
+});
+
+
+// PATCH/PUT
+//      patch - only specify the fields to change     { imgUrl: 'newurl' }
+//      put   - specify all fields and replace the entire thing     { name: 'oldname', imgUrl: 'newurl'  }
+//
+//  PUT /plants/:plantId
+//        req body {name, imgUrl}
+//        -> status 200, respond with the updated plant
+//        -> status 404, if plant doesnt exist {message: 'Error, plant ${idx} doesnt exist'}
+
+app.put("/plants/:plantId", (req, res) => {
+    const {name, imgUrl} = req.body;
+    const idx = req.params.plantId;
+    if (PLANTS[idx]) {
+        PLANTS[idx] = {name, imgUrl};
+        res.status(200).json(PLANTS[idx]);  
+    } else {
+        res.status(404).json({message: `Error, plant ${idx} doesnt exist`});
+    }
+});
+
+//  PATCH /plants/:plantId
+//        req body {name}
+
+app.patch("/plants/:plantId", (req, res) => {
+    const {name, imgUrl} = req.body;
+    const idx = req.params.plantId;
+    if (PLANTS[idx]) {
+        if (name !== undefined) {
+            PLANTS[idx].name = name;
+        }
+        if (imgUrl !== undefined) {
+            PLANTS[idx].imgUrl = imgUrl;
+        }
+        res.status(200).json(PLANTS[idx]);
+    } else {
+        res.status(404).json({message: `Error, plant ${idx} doesnt exist`});
+    }
+});
+
+
+// HTTP verbs
+//  GET
+//  POST - create
+//  DELETE - destroy
+//  PUT/PATCH - update
+
 
 app.listen(port, () => {
   console.log(`Plant backend listening on port ${port}`);

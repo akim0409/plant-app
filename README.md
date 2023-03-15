@@ -1,2 +1,2 @@
-+ backend: comment out all the endpoints and redo them
-+ frontend: commenting out the onClick and redo it
++ backend: comment out put/patch endpoints 
++ frontend: recreate Alvin's design for a plant card
